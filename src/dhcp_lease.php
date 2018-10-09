@@ -3,7 +3,7 @@
 include_once('class/Api.php');
 
 $current_time = new DateTime();
-$leases = Api::getDhcpLeaseMikrotik('dhcp_server_name');
+$leases = Api::getDhcpLeaseMikrotik($ip, $user, $password);
 
 $sql2 = "select * from dhcp_lease where status = 'A' and id_company = $id_company"; //alive
 $res2 = $con->execSQL($sql2);
@@ -26,7 +26,7 @@ while($r2 = $con->getFetch($res2)) {
             $stop_s = $stop->format('Y-m-d H:i:s');
 
             $sql5 = "update dhcp_lease set stop = '$stop_s' where id = $id";
-            $res5 = $con->executaSQL($sql5);
+            $res5 = $con->execSQL($sql5);
 
             unset($leases[$i]);
             $found = true;
@@ -36,7 +36,7 @@ while($r2 = $con->getFetch($res2)) {
 
       if(!$found) {
          $sql3 = "update dhcp_lease set status = 'D' where id = $id";
-         $res3 = $con->executaSQL($sql3);
+         $res3 = $con->execSQL($sql3);
       }
    }
 
